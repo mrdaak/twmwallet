@@ -62,6 +62,7 @@ class WalletHome extends React.Component {
             show_new_account_form: false,
             show_purchase_form: false,
             show_edit_offer_form: false,
+            show_account_edit_form: false,
             blockchain_tokens_staked: 0,
             blockchain_interest_history: [],
             blockchain_current_interest: {},
@@ -723,6 +724,16 @@ class WalletHome extends React.Component {
         this.setState({show_purchase_form: false});
     };
 
+    //close modal of Purchase Form
+    handleShowAccountEditForm = () => {
+        this.setState({show_account_edit_form: true});
+    };
+
+    //close modal of Purchase Form
+    handleCloseAccountEditForm = () => {
+        this.setState({show_account_edit_form: false});
+    };
+
     //show modal of Purchase Form
     handleShowPurchaseForm = (listing) => {
         this.setState({show_purchase_form: true, show_purchase_offer: listing});
@@ -1157,6 +1168,10 @@ class WalletHome extends React.Component {
         }
     };
 
+    make_edit_account = async (e) => {
+
+    };
+
     render() {
         const twmwallet = () => {
             switch (this.state.interface_view) {
@@ -1174,7 +1189,7 @@ class WalletHome extends React.Component {
 
                                     <ul>
                                         <Row>
-                                            <li>{this.state.cash} SFX </li>
+                                            <li>{this.state.cash} SFX</li>
 
                                             {this.state.pending_cash > 0 ?
                                                 (<li>. || {this.state.pending_cash} Pending</li>) : ''}
@@ -1203,8 +1218,9 @@ class WalletHome extends React.Component {
 
                             <Col className="accounts" sm={8}>
                                 <div className="account-list justify-content-center">
-                                    <h2 className="text-center m-2">If you are reading this,</h2> 
-                                    <h2 className="text-center m-2">You are part of the few chosen to help free humanity.</h2> 
+                                    <h2 className="text-center m-2">If you are reading this,</h2>
+                                    <h2 className="text-center m-2">You are part of the few chosen to help free
+                                        humanity.</h2>
                                     <h1 className="text-center m-2">Together we can make history.</h1>
                                 </div>
 
@@ -1503,7 +1519,7 @@ class WalletHome extends React.Component {
                                     <td>{this.to_ellipsis(listing.offerID)}</td>
 
                                     <td>
-                                    <Col className="align-self-center" md={2}>
+                                        <Col className="align-self-center" md={2}>
                                             <Button size="lg" variant="success"
                                                     onClick={() => this.handleShowEditOfferForm(listing)}>
                                                 EDIT
@@ -1512,7 +1528,8 @@ class WalletHome extends React.Component {
                                                    show={this.state.show_edit_offer_form}
                                                    onHide={this.handleCloseEditOfferForm}>
                                                 <Modal.Header closeButton>
-                                                    <Modal.Title>Edit Offer {this.state.show_edit_offer.title}</Modal.Title>
+                                                    <Modal.Title>Edit
+                                                        Offer {this.state.show_edit_offer.title}</Modal.Title>
                                                 </Modal.Header>
                                                 <Modal.Body>
 
@@ -1524,19 +1541,19 @@ class WalletHome extends React.Component {
                                                         Username <Form.Control name="username"
                                                                                value={this.state.show_edit_offer.seller}/>
                                                         Image URL <Form.Control name="main_image"
-                                                                                          defaultValue={data.main_image}/>
+                                                                                defaultValue={data.main_image}/>
                                                         Title <Form.Control name="title"
                                                                             defaultValue={this.state.show_edit_offer.title}/>
                                                         Description <Form.Control maxLength="200" as="textarea"
                                                                                   name="description"
                                                                                   defaultValue={data.description}/>
                                                         Price (SFX) <Form.Control name="price"
-                                                                                defaultValue={this.state.show_edit_offer.price / 10000000000}/>
+                                                                                  defaultValue={this.state.show_edit_offer.price / 10000000000}/>
                                                         Available Quantity <Form.Control name="quantity"
                                                                                          defaultValue={this.state.show_edit_offer.quantity}/>
-                                                        SKU <Form.Control name="sku" 
+                                                        SKU <Form.Control name="sku"
                                                                           defaultValue={data.sku}/>
-                                                        Barcode (ISBN, UPC, GTIN, etc) <Form.Control name="barcode" 
+                                                        Barcode (ISBN, UPC, GTIN, etc) <Form.Control name="barcode"
                                                                                                      defaultValue={data.barcode}/>
 
                                                         Message Type <Form.Control name="message_type"
@@ -1552,11 +1569,13 @@ class WalletHome extends React.Component {
                                                         Mixins <Form.Control name="mixins" defaultValue="7"
                                                                              placedholder="your location"/>
 
-                                                        <Button block size="lg" type="submit" variant="success">Submit Edit</Button>
+                                                        <Button block size="lg" type="submit" variant="success">Submit
+                                                            Edit</Button>
                                                     </Form>
                                                 </Modal.Body>
                                                 <Modal.Footer className="align-self-start">
-                                                    <Button size="lg" variant="danger" onClick={this.handleCloseEditOfferForm}>
+                                                    <Button size="lg" variant="danger"
+                                                            onClick={this.handleCloseEditOfferForm}>
                                                         Close
                                                     </Button>
                                                 </Modal.Footer>
@@ -1667,7 +1686,64 @@ class WalletHome extends React.Component {
                                                     </ul>
                                                 </Row>
                                                 <Col className="d-flex flex-column">
-                                                    <Button>Edit</Button>
+                                                    <Col className="align-self-center" md={2}>
+                                                        <Button block size="lg" variant="success"
+                                                                onClick={this.handleShowAccountEditForm}>
+                                                            EDIT
+                                                        </Button>
+
+                                                        <Modal className="new-account-form" animation={false}
+                                                               show={this.state.show_account_edit_form}
+                                                               onHide={this.handleCloseAccountEditForm}>
+                                                            <Modal.Header closeButton>
+                                                                <Modal.Title>Edit Account {selected.username}</Modal.Title>
+                                                            </Modal.Header>
+                                                            <Modal.Body>
+                                                                <Form id="edit_account"
+                                                                      onSubmit={this.make_edit_account()}>
+                                                                    Username <Form.Control name="username"
+                                                                                           placedholder="enter your desired username"/>
+                                                                    Avatar URL <Form.Control name="avatar"
+                                                                                             placedholder="enter the url of your avatar"/>
+                                                                    Twitter Link <Form.Control name="twitter"
+                                                                                               defaultValue="twitter.com"
+                                                                                               placedholder="enter the link to your twitter handle"/>
+                                                                    Facebook Link <Form.Control name="facebook"
+                                                                                                defaultValue="facebook.com"
+                                                                                                placedholder="enter the to of your facebook page"/>
+                                                                    LinkedIn Link <Form.Control name="linkedin"
+                                                                                                defaultValue="linkedin.com"
+                                                                                                placedholder="enter the link to your linkedin handle"/>
+                                                                    Biography <Form.Control maxLength="200"
+                                                                                            as="textarea"
+                                                                                            name="biography"
+                                                                                            placedholder="type up your biography"/>
+                                                                    Website <Form.Control name="website"
+                                                                                          defaultValue="safex.org"
+                                                                                          placedholder="if you have your own website: paste your link here"/>
+                                                                    Location <Form.Control name="location"
+                                                                                           defaultValue="Earth"
+                                                                                           placedholder="your location"/>
+                                                                    Email <Form.Control name="email"
+                                                                                        defaultValue="xyz@example.com"
+                                                                                        placedholder="your location"/>
+                                                                    Mixins <Form.Control name="mixins" defaultValue="7"
+                                                                                         placedholder="your location"/>
+
+                                                                    <Button block size="lg" variant="success"
+                                                                            type="submit">Create
+                                                                        Account</Button>
+                                                                </Form>
+                                                            </Modal.Body>
+                                                            <Modal.Footer className="align-self-start">
+
+                                                                <Button variant="danger"
+                                                                        onClick={this.handleCloseAccountEditForm}>
+                                                                    Close
+                                                                </Button>
+                                                            </Modal.Footer>
+                                                        </Modal>
+                                                    </Col>
                                                     <Button onClick={() => this.register_twmapi(selected)}>
                                                         Register API
                                                     </Button>
@@ -1773,7 +1849,8 @@ class WalletHome extends React.Component {
                                                         </Form>
                                                     </Modal.Body>
                                                     <Modal.Footer className="align-self-start">
-                                                        <Button size="lg" variant="danger" onClick={this.handleCloseNewOfferForm}>
+                                                        <Button size="lg" variant="danger"
+                                                                onClick={this.handleCloseNewOfferForm}>
                                                             Close
                                                         </Button>
                                                     </Modal.Footer>
@@ -1810,7 +1887,7 @@ class WalletHome extends React.Component {
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {non_listings_table}
+                                                {non_listings_table}
                                                 </tbody>
                                             </Table>
                                         </Row>
